@@ -1,0 +1,20 @@
+# Netlify Configuration
+
+[build]
+  # No build command needed for static HTML
+  command = ""
+  publish = "."
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[context.production]
+  environment = { NETLIFY_NEXT_PLUGIN_SKIP = "true" }
+
+[dev]
+  command = "npx http-server"
+  port = 8000
+  targetPort = 8000
+  publish = "."

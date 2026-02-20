@@ -1,0 +1,17 @@
+{
+  "name": "flutter-complete-guide",
+  "version": "1.0.0",
+  "description": "A comprehensive Flutter guide - Static documentation site",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx http-server",
+    "build": "echo 'No build step needed for static site'"
+  },
+  "keywords": [
+    "flutter",
+    "guide",
+    "documentation"
+  ],
+  "author": "",
+  "license": "MIT"
+}
