@@ -1,0 +1,1909 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flutter: Complete Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0e1a;
+    --surface: #111827;
+    --surface2: #1a2235;
+    --accent: #54d2ff;
+    --accent2: #a78bfa;
+    --accent3: #34d399;
+    --accent4: #fb923c;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --border: #1e2d45;
+    --code-bg: #0d1520;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* SIDEBAR */
+  .sidebar {
+    position: fixed;
+    left: 0; top: 0;
+    width: 260px;
+    height: 100vh;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    overflow-y: auto;
+    z-index: 100;
+    padding: 24px 0;
+  }
+
+  .sidebar-logo {
+    padding: 0 20px 20px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 16px;
+  }
+
+  .sidebar-logo span {
+    font-size: 22px;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .sidebar-logo p {
+    font-size: 11px;
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+    margin-top: 2px;
+  }
+
+  .nav-section {
+    padding: 6px 16px 4px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--muted);
+    text-transform: uppercase;
+    font-family: 'Space Mono', monospace;
+  }
+
+  .sidebar a {
+    display: block;
+    padding: 7px 20px;
+    font-size: 13px;
+    color: #94a3b8;
+    text-decoration: none;
+    border-left: 2px solid transparent;
+    transition: all 0.2s;
+    font-weight: 600;
+  }
+
+  .sidebar a:hover, .sidebar a.active {
+    color: var(--accent);
+    border-left-color: var(--accent);
+    background: rgba(84,210,255,0.05);
+  }
+
+  /* MAIN */
+  .main {
+    margin-left: 260px;
+    padding: 0 48px 80px;
+    max-width: 1000px;
+  }
+
+  /* HERO */
+  .hero {
+    padding: 80px 0 60px;
+    position: relative;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -200px; right: -200px;
+    height: 300px;
+    background: radial-gradient(ellipse at 40% 50%, rgba(84,210,255,0.08) 0%, transparent 70%),
+                radial-gradient(ellipse at 80% 30%, rgba(167,139,250,0.07) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(84,210,255,0.1);
+    border: 1px solid rgba(84,210,255,0.2);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-family: 'Space Mono', monospace;
+    color: var(--accent);
+    margin-bottom: 20px;
+  }
+
+  .hero h1 {
+    font-size: 56px;
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+
+  .hero h1 span {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .hero p {
+    font-size: 17px;
+    color: #94a3b8;
+    max-width: 620px;
+    margin-bottom: 32px;
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+
+  .stat {
+    text-align: center;
+  }
+
+  .stat-num {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--accent);
+    display: block;
+    font-family: 'Space Mono', monospace;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* SECTIONS */
+  .section {
+    margin-bottom: 70px;
+  }
+
+  .section-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  h2 {
+    font-size: 36px;
+    font-weight: 800;
+    margin-bottom: 8px;
+    color: #f1f5f9;
+  }
+
+  h3 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #e2e8f0;
+    margin: 28px 0 12px;
+  }
+
+  h4 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--accent3);
+    margin: 20px 0 8px;
+    font-family: 'Space Mono', monospace;
+  }
+
+  p { margin-bottom: 14px; color: #cbd5e1; font-size: 15px; }
+
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+    margin-bottom: 36px;
+    opacity: 0.3;
+  }
+
+  /* CODE BLOCKS */
+  pre {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+    overflow-x: auto;
+    margin: 16px 0 24px;
+    position: relative;
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    line-height: 1.8;
+  }
+
+  pre::before {
+    content: attr(data-lang);
+    position: absolute;
+    top: 10px; right: 14px;
+    font-size: 10px;
+    font-family: 'Space Mono', monospace;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+
+  .kw { color: #c792ea; }
+  .fn { color: #82aaff; }
+  .str { color: #c3e88d; }
+  .cm { color: #546e7a; font-style: italic; }
+  .num { color: #f78c6c; }
+  .cls { color: #ffcb6b; }
+  .prop { color: var(--accent); }
+  .ann { color: #f07178; }
+
+  code {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    background: rgba(84,210,255,0.1);
+    color: var(--accent);
+    padding: 2px 7px;
+    border-radius: 4px;
+  }
+
+  /* CARDS */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+    margin: 20px 0;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+
+  .card-icon {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+
+  .card h4 {
+    color: #f1f5f9;
+    font-size: 14px;
+    margin: 0 0 6px;
+    font-family: 'Syne', sans-serif;
+  }
+
+  .card p {
+    font-size: 12px;
+    color: var(--muted);
+    margin: 0;
+  }
+
+  /* WIDGET SHOWCASE */
+  .widget-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0 24px;
+    font-size: 14px;
+  }
+
+  .widget-table th {
+    background: var(--surface2);
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+  }
+
+  .widget-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    color: #cbd5e1;
+    vertical-align: top;
+  }
+
+  .widget-table td:first-child {
+    color: var(--accent3);
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+
+  .widget-table tr:hover td { background: rgba(84,210,255,0.03); }
+
+  /* CALLOUTS */
+  .callout {
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin: 20px 0;
+    border-left: 3px solid;
+    font-size: 14px;
+  }
+
+  .callout-info {
+    background: rgba(84,210,255,0.07);
+    border-color: var(--accent);
+    color: #93c5fd;
+  }
+
+  .callout-warn {
+    background: rgba(251,146,60,0.07);
+    border-color: var(--accent4);
+    color: #fdba74;
+  }
+
+  .callout-tip {
+    background: rgba(52,211,153,0.07);
+    border-color: var(--accent3);
+    color: #6ee7b7;
+  }
+
+  .callout strong {
+    display: block;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    font-family: 'Space Mono', monospace;
+  }
+
+  /* PROGRESS INDICATOR */
+  .level-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    font-family: 'Space Mono', monospace;
+    letter-spacing: 1px;
+    margin-left: 10px;
+    vertical-align: middle;
+  }
+
+  .level-beginner { background: rgba(52,211,153,0.15); color: var(--accent3); }
+  .level-intermediate { background: rgba(84,210,255,0.15); color: var(--accent); }
+  .level-advanced { background: rgba(167,139,250,0.15); color: var(--accent2); }
+
+  /* FILE STRUCTURE */
+  .file-tree {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    line-height: 2;
+  }
+
+  .file-tree .dir { color: #ffcb6b; }
+  .file-tree .file { color: #c3e88d; }
+  .file-tree .file-desc { color: var(--muted); }
+  .file-tree .indent { padding-left: 20px; display: block; }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+
+  @media (max-width: 900px) {
+    .sidebar { display: none; }
+    .main { margin-left: 0; padding: 0 20px 60px; }
+    .hero h1 { font-size: 36px; }
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .section { animation: fadeUp 0.4s ease both; }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <span>⚡ Flutter</span>
+    <p>// complete guide</p>
+  </div>
+
+  <div class="nav-section">🟢 Basics</div>
+  <a href="#intro">Introduction</a>
+  <a href="#setup">Setup & Installation</a>
+  <a href="#structure">Project Structure</a>
+  <a href="#dart-basics">Dart Language Basics</a>
+  <a href="#first-app">First App</a>
+
+  <div class="nav-section">🔵 Core Concepts</div>
+  <a href="#widgets">Widgets Overview</a>
+  <a href="#layout-widgets">Layout Widgets</a>
+  <a href="#input-widgets">Input Widgets</a>
+  <a href="#navigation">Navigation & Routes</a>
+  <a href="#state">State Management</a>
+
+  <div class="nav-section">🟣 Intermediate</div>
+  <a href="#async">Async & Futures</a>
+  <a href="#http">HTTP & APIs</a>
+  <a href="#local-storage">Local Storage</a>
+  <a href="#forms">Forms & Validation</a>
+  <a href="#animations">Animations</a>
+  <a href="#themes">Themes & Styling</a>
+
+  <div class="nav-section">🔴 Advanced</div>
+  <a href="#provider">Provider Pattern</a>
+  <a href="#riverpod">Riverpod</a>
+  <a href="#bloc">BLoC Pattern</a>
+  <a href="#custom-widgets">Custom Widgets</a>
+  <a href="#firebase">Firebase Integration</a>
+  <a href="#testing">Testing</a>
+  <a href="#deployment">Build & Deploy</a>
+</nav>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-badge">📘 Complete Reference Guide</div>
+    <h1>Master<br><span>Flutter</span></h1>
+    <p>From your very first widget to production-grade apps. Every concept explained with real code, file structures, and practical examples.</p>
+    <div class="hero-stats">
+      <div class="stat"><span class="stat-num">17+</span><span class="stat-label">Topics</span></div>
+      <div class="stat"><span class="stat-num">50+</span><span class="stat-label">Code Examples</span></div>
+      <div class="stat"><span class="stat-num">3</span><span class="stat-label">Skill Levels</span></div>
+      <div class="stat"><span class="stat-num">100+</span><span class="stat-label">Widgets Covered</span></div>
+    </div>
+  </div>
+
+  <!-- ===================== INTRODUCTION ===================== -->
+  <section class="section" id="intro">
+    <div class="section-tag">01 — Introduction</div>
+    <h2>What is Flutter? <span class="level-badge level-beginner">Beginner</span></h2>
+    <div class="divider"></div>
+
+    <p>Flutter is Google's open-source UI toolkit for building beautiful, natively compiled applications for mobile, web, and desktop from a single codebase. It uses the <strong>Dart</strong> programming language.</p>
+
+    <div class="card-grid">
+      <div class="card"><div class="card-icon">📱</div><h4>Mobile</h4><p>iOS & Android native apps</p></div>
+      <div class="card"><div class="card-icon">🌐</div><h4>Web</h4><p>Progressive web apps</p></div>
+      <div class="card"><div class="card-icon">🖥️</div><h4>Desktop</h4><p>Windows, macOS, Linux</p></div>
+      <div class="card"><div class="card-icon">⚡</div><h4>Fast</h4><p>Compiled to native ARM code</p></div>
+      <div class="card"><div class="card-icon">🎨</div><h4>Expressive</h4><p>Rich, customizable widgets</p></div>
+      <div class="card"><div class="card-icon">🔥</div><h4>Hot Reload</h4><p>See changes instantly</p></div>
+    </div>
+
+    <h3>Flutter Architecture</h3>
+    <p>Flutter has three layers: <strong>Framework</strong> (Dart), <strong>Engine</strong> (C++, Skia), and <strong>Embedder</strong> (platform-specific). Everything on screen is a <em>widget</em>.</p>
+  </section>
+
+  <!-- ===================== SETUP ===================== -->
+  <section class="section" id="setup">
+    <div class="section-tag">02 — Setup</div>
+    <h2>Installation & Setup <span class="level-badge level-beginner">Beginner</span></h2>
+    <div class="divider"></div>
+
+    <h3>1. Install Flutter SDK</h3>
+<pre data-lang="bash"><span class="cm"># Download Flutter SDK from flutter.dev
+# Then add to PATH:</span>
+<span class="kw">export</span> PATH=<span class="str">"$PATH:`pwd`/flutter/bin"</span>
+
+<span class="cm"># Verify installation</span>
+flutter doctor
+
+<span class="cm"># Create a new project</span>
+flutter create my_app
+
+<span class="cm"># Navigate and run</span>
+<span class="kw">cd</span> my_app
+flutter run</pre>
+
+    <h3>2. VS Code Extensions</h3>
+    <p>Install <strong>Flutter</strong> and <strong>Dart</strong> extensions from VS Code marketplace. They give you code completion, debugging, hot reload, and widget inspector.</p>
+
+    <div class="callout callout-tip">
+      <strong>💡 Tip</strong>
+      Run <code>flutter doctor</code> after setup. It checks for all dependencies and tells you exactly what's missing (Android Studio, Xcode, etc.)
+    </div>
+  </section>
+
+  <!-- ===================== PROJECT STRUCTURE ===================== -->
+  <section class="section" id="structure">
+    <div class="section-tag">03 — Structure</div>
+    <h2>Project File Structure <span class="level-badge level-beginner">Beginner</span></h2>
+    <div class="divider"></div>
+
+    <div class="file-tree">
+      <span class="dir">my_app/</span>
+      <span class="indent"><span class="dir">android/</span> <span class="file-desc">← Android native code</span></span>
+      <span class="indent"><span class="dir">ios/</span> <span class="file-desc">← iOS native code</span></span>
+      <span class="indent"><span class="dir">lib/</span> <span class="file-desc">← YOUR DART CODE LIVES HERE</span></span>
+      <span class="indent">  <span class="file">main.dart</span> <span class="file-desc">← App entry point</span></span>
+      <span class="indent">  <span class="dir">screens/</span> <span class="file-desc">← Screen/page widgets</span></span>
+      <span class="indent">  <span class="dir">widgets/</span> <span class="file-desc">← Reusable widget components</span></span>
+      <span class="indent">  <span class="dir">models/</span> <span class="file-desc">← Data classes</span></span>
+      <span class="indent">  <span class="dir">services/</span> <span class="file-desc">← API calls, DB logic</span></span>
+      <span class="indent">  <span class="dir">providers/</span> <span class="file-desc">← State management</span></span>
+      <span class="indent"><span class="dir">assets/</span> <span class="file-desc">← Images, fonts, JSON files</span></span>
+      <span class="indent"><span class="file">pubspec.yaml</span> <span class="file-desc">← Dependencies & config</span></span>
+      <span class="indent"><span class="file">pubspec.lock</span> <span class="file-desc">← Locked dependency versions</span></span>
+    </div>
+
+    <h3>pubspec.yaml — The Config File</h3>
+<pre data-lang="yaml"><span class="prop">name:</span> my_app
+<span class="prop">description:</span> <span class="str">A new Flutter application</span>
+<span class="prop">version:</span> <span class="num">1.0.0+1</span>
+
+<span class="prop">environment:</span>
+  <span class="prop">sdk:</span> <span class="str">">=3.0.0 <4.0.0"</span>
+
+<span class="prop">dependencies:</span>
+  <span class="prop">flutter:</span>
+    <span class="prop">sdk:</span> flutter
+  <span class="prop">http:</span> ^1.1.0               <span class="cm"># HTTP requests</span>
+  <span class="prop">provider:</span> ^6.1.0          <span class="cm"># State management</span>
+  <span class="prop">shared_preferences:</span> ^2.2.0 <span class="cm"># Local storage</span>
+
+<span class="prop">flutter:</span>
+  <span class="prop">assets:</span>
+    - assets/images/
+    - assets/fonts/
+  <span class="prop">fonts:</span>
+    - <span class="prop">family:</span> Roboto
+      <span class="prop">fonts:</span>
+        - <span class="prop">asset:</span> assets/fonts/Roboto-Regular.ttf</pre>
+  </section>
+
+  <!-- ===================== DART BASICS ===================== -->
+  <section class="section" id="dart-basics">
+    <div class="section-tag">04 — Dart</div>
+    <h2>Dart Language Basics <span class="level-badge level-beginner">Beginner</span></h2>
+    <div class="divider"></div>
+
+    <h3>Variables & Types</h3>
+<pre data-lang="dart"><span class="cm">// Type-inferred variables</span>
+<span class="kw">var</span> name = <span class="str">'Flutter'</span>;
+<span class="kw">final</span> version = <span class="num">3.0</span>;      <span class="cm">// set once at runtime</span>
+<span class="kw">const</span> PI = <span class="num">3.14159</span>;      <span class="cm">// compile-time constant</span>
+
+<span class="cm">// Explicit types</span>
+<span class="cls">String</span> greeting = <span class="str">'Hello'</span>;
+<span class="cls">int</span> count = <span class="num">42</span>;
+<span class="cls">double</span> price = <span class="num">9.99</span>;
+<span class="cls">bool</span> isActive = <span class="kw">true</span>;
+<span class="cls">List</span>&lt;<span class="cls">String</span>&gt; fruits = [<span class="str">'apple'</span>, <span class="str">'banana'</span>];
+<span class="cls">Map</span>&lt;<span class="cls">String</span>, <span class="cls">int</span>&gt; scores = {<span class="str">'Alice'</span>: <span class="num">95</span>, <span class="str">'Bob'</span>: <span class="num">87</span>};
+
+<span class="cm">// Null safety</span>
+<span class="cls">String</span>? nullableName = <span class="kw">null</span>;  <span class="cm">// Can be null</span>
+<span class="cls">String</span> required = nullableName ?? <span class="str">'default'</span>; <span class="cm">// Null coalescing</span></pre>
+
+    <h3>Functions</h3>
+<pre data-lang="dart"><span class="cm">// Named function</span>
+<span class="cls">String</span> <span class="fn">greet</span>(<span class="cls">String</span> name) {
+  <span class="kw">return</span> <span class="str">'Hello, $name!'</span>;
+}
+
+<span class="cm">// Arrow function (single expression)</span>
+<span class="cls">int</span> <span class="fn">square</span>(<span class="cls">int</span> x) => x * x;
+
+<span class="cm">// Named parameters (very common in Flutter!)</span>
+<span class="kw">void</span> <span class="fn">createUser</span>({
+  <span class="kw">required</span> <span class="cls">String</span> name,
+  <span class="cls">int</span> age = <span class="num">18</span>,         <span class="cm">// optional with default</span>
+}) {
+  <span class="fn">print</span>(<span class="str">'$name is $age years old'</span>);
+}
+
+<span class="fn">createUser</span>(name: <span class="str">'Alice'</span>, age: <span class="num">25</span>);</pre>
+
+    <h3>Classes</h3>
+<pre data-lang="dart"><span class="kw">class</span> <span class="cls">Person</span> {
+  <span class="kw">final</span> <span class="cls">String</span> name;
+  <span class="kw">final</span> <span class="cls">int</span> age;
+
+  <span class="cm">// Constructor</span>
+  <span class="kw">const</span> <span class="cls">Person</span>({<span class="kw">required</span> <span class="kw">this</span>.name, <span class="kw">required</span> <span class="kw">this</span>.age});
+
+  <span class="cm">// Named constructor</span>
+  <span class="cls">Person</span>.<span class="fn">anonymous</span>() : name = <span class="str">'Anonymous'</span>, age = <span class="num">0</span>;
+
+  <span class="cm">// Method</span>
+  <span class="cls">String</span> <span class="fn">introduce</span>() => <span class="str">'I am $name, age $age'</span>;
+
+  <span class="cm">// Factory constructor (common for JSON parsing)</span>
+  <span class="kw">factory</span> <span class="cls">Person</span>.<span class="fn">fromJson</span>(<span class="cls">Map</span>&lt;<span class="cls">String</span>, <span class="kw">dynamic</span>&gt; json) {
+    <span class="kw">return</span> <span class="cls">Person</span>(
+      name: json[<span class="str">'name'</span>],
+      age: json[<span class="str">'age'</span>],
+    );
+  }
+
+  <span class="cm">// toJson</span>
+  <span class="cls">Map</span>&lt;<span class="cls">String</span>, <span class="kw">dynamic</span>&gt; <span class="fn">toJson</span>() => {<span class="str">'name'</span>: name, <span class="str">'age'</span>: age};
+}
+
+<span class="cm">// Inheritance</span>
+<span class="kw">class</span> <span class="cls">Employee</span> <span class="kw">extends</span> <span class="cls">Person</span> {
+  <span class="kw">final</span> <span class="cls">String</span> company;
+  <span class="cls">Employee</span>({<span class="kw">required</span> <span class="kw">super</span>.name, <span class="kw">required</span> <span class="kw">super</span>.age, <span class="kw">required</span> <span class="kw">this</span>.company});
+}</pre>
+  </section>
+
+  <!-- ===================== FIRST APP ===================== -->
+  <section class="section" id="first-app">
+    <div class="section-tag">05 — First App</div>
+    <h2>Your First Flutter App <span class="level-badge level-beginner">Beginner</span></h2>
+    <div class="divider"></div>
+
+    <p>Every Flutter app starts with <code>main()</code> which calls <code>runApp()</code>. Let's build a complete counter app:</p>
+
+<pre data-lang="dart"><span class="cm">// lib/main.dart</span>
+<span class="kw">import</span> <span class="str">'package:flutter/material.dart'</span>;
+
+<span class="kw">void</span> <span class="fn">main</span>() {
+  <span class="fn">runApp</span>(<span class="kw">const</span> <span class="cls">MyApp</span>());
+}
+
+<span class="cm">// Root widget — typically StatelessWidget</span>
+<span class="kw">class</span> <span class="cls">MyApp</span> <span class="kw">extends</span> <span class="cls">StatelessWidget</span> {
+  <span class="kw">const</span> <span class="cls">MyApp</span>({<span class="kw">super</span>.key});
+
+  <span class="ann">@override</span>
+  <span class="cls">Widget</span> <span class="fn">build</span>(<span class="cls">BuildContext</span> context) {
+    <span class="kw">return</span> <span class="cls">MaterialApp</span>(
+      title: <span class="str">'Counter App'</span>,
+      theme: <span class="cls">ThemeData</span>(
+        colorScheme: <span class="cls">ColorScheme</span>.<span class="fn">fromSeed</span>(seedColor: <span class="cls">Colors</span>.blue),
+        useMaterial3: <span class="kw">true</span>,
+      ),
+      home: <span class="kw">const</span> <span class="cls">CounterScreen</span>(),
+    );
+  }
+}
+
+<span class="cm">// Stateful widget for interactive UI</span>
+<span class="kw">class</span> <span class="cls">CounterScreen</span> <span class="kw">extends</span> <span class="cls">StatefulWidget</span> {
+  <span class="kw">const</span> <span class="cls">CounterScreen</span>({<span class="kw">super</span>.key});
+
+  <span class="ann">@override</span>
+  <span class="cls">State</span>&lt;<span class="cls">CounterScreen</span>&gt; <span class="fn">createState</span>() => _CounterScreenState();
+}
+
+<span class="kw">class</span> <span class="cls">_CounterScreenState</span> <span class="kw">extends</span> <span class="cls">State</span>&lt;<span class="cls">CounterScreen</span>&gt; {
+  <span class="kw">int</span> _counter = <span class="num">0</span>;  <span class="cm">// state variable</span>
+
+  <span class="kw">void</span> <span class="fn">_increment</span>() {
+    <span class="fn">setState</span>(() {       <span class="cm">// triggers rebuild</span>
+      _counter++;
+    });
+  }
+
+  <span class="ann">@override</span>
+  <span class="cls">Widget</span> <span class="fn">build</span>(<span class="cls">BuildContext</span> context) {
+    <span class="kw">return</span> <span class="cls">Scaffold</span>(
+      appBar: <span class="cls">AppBar</span>(title: <span class="kw">const</span> <span class="cls">Text</span>(<span class="str">'Counter'</span>)),
+      body: <span class="cls">Center</span>(
+        child: <span class="cls">Column</span>(
+          mainAxisAlignment: <span class="cls">MainAxisAlignment</span>.center,
+          children: [
+            <span class="kw">const</span> <span class="cls">Text</span>(<span class="str">'You have pushed the button:'</span>),
+            <span class="cls">Text</span>(
+              <span class="str">'$_counter'</span>,
+              style: <span class="cls">Theme</span>.<span class="fn">of</span>(context).textTheme.displayLarge,
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: <span class="cls">FloatingActionButton</span>(
+        onPressed: _increment,
+        child: <span class="kw">const</span> <span class="cls">Icon</span>(<span class="cls">Icons</span>.add),
+      ),
+    );
+  }
+}</pre>
+  </section>
+
+  <!-- ===================== WIDGETS ===================== -->
+  <section class="section" id="widgets">
+    <div class="section-tag">06 — Widgets</div>
+    <h2>Widgets Reference <span class="level-badge level-intermediate">Intermediate</span></h2>
+    <div class="divider"></div>
+
+    <p>In Flutter, <strong>everything is a widget</strong>. Widgets are either <em>Stateless</em> (immutable) or <em>Stateful</em> (mutable). Here's a comprehensive overview:</p>
+
+    <h3>StatelessWidget vs StatefulWidget</h3>
+<pre data-lang="dart"><span class="cm">// StatelessWidget — no mutable state, rebuilds only when parent rebuilds</span>
+<span class="kw">class</span> <span class="cls">WelcomeCard</span> <span class="kw">extends</span> <span class="cls">StatelessWidget</span> {
+  <span class="kw">final</span> <span class="cls">String</span> username;
+  <span class="kw">const</span> <span class="cls">WelcomeCard</span>({<span class="kw">super</span>.key, <span class="kw">required</span> <span class="kw">this</span>.username});
+
+  <span class="ann">@override</span>
+  <span class="cls">Widget</span> <span class="fn">build</span>(<span class="cls">BuildContext</span> context) {
+    <span class="kw">return</span> <span class="cls">Text</span>(<span class="str">'Welcome, $username!'</span>);
+  }
+}
+
+<span class="cm">// StatefulWidget — has mutable state managed in State class</span>
+<span class="kw">class</span> <span class="cls">ToggleButton</span> <span class="kw">extends</span> <span class="cls">StatefulWidget</span> {
+  <span class="kw">const</span> <span class="cls">ToggleButton</span>({<span class="kw">super</span>.key});
+  <span class="ann">@override</span>
+  <span class="cls">State</span>&lt;<span class="cls">ToggleButton</span>&gt; <span class="fn">createState</span>() => _ToggleButtonState();
+}
+
+<span class="kw">class</span> <span class="cls">_ToggleButtonState</span> <span class="kw">extends</span> <span class="cls">State</span>&lt;<span class="cls">ToggleButton</span>&gt; {
+  <span class="kw">bool</span> _isOn = <span class="kw">false</span>;
+
+  <span class="ann">@override</span>
+  <span class="cls">Widget</span> <span class="fn">build</span>(<span class="cls">BuildContext</span> context) {
+    <span class="kw">return</span> <span class="cls">Switch</span>(
+      value: _isOn,
+      onChanged: (v) => <span class="fn">setState</span>(() => _isOn = v),
+    );
+  }
+}</pre>
+
+    <h3>Most Important Widgets</h3>
+    <table class="widget-table">
+      <tr><th>Widget</th><th>Description</th><th>Key Props</th></tr>
+      <tr><td>Text</td><td>Display text</td><td>style, textAlign, overflow, maxLines</td></tr>
+      <tr><td>Image</td><td>Display images (asset, network, file)</td><td>Image.network(), Image.asset(), fit, width</td></tr>
+      <tr><td>Icon</td><td>Material icons</td><td>Icons.xxx, size, color</td></tr>
+      <tr><td>Container</td><td>Box with styling</td><td>color, padding, margin, decoration, width, height</td></tr>
+      <tr><td>SizedBox</td><td>Fixed-size box / spacer</td><td>width, height</td></tr>
+      <tr><td>Padding</td><td>Add padding around child</td><td>padding: EdgeInsets.xxx</td></tr>
+      <tr><td>Center</td><td>Center its child</td><td>child</td></tr>
+      <tr><td>Align</td><td>Align child within parent</td><td>alignment: Alignment.xxx</td></tr>
+      <tr><td>Scaffold</td><td>Page structure</td><td>appBar, body, drawer, floatingActionButton, bottomNavBar</td></tr>
+      <tr><td>AppBar</td><td>Top navigation bar</td><td>title, actions, leading, backgroundColor</td></tr>
+      <tr><td>ElevatedButton</td><td>Material button</td><td>onPressed, child, style</td></tr>
+      <tr><td>TextButton</td><td>Flat text button</td><td>onPressed, child</td></tr>
+      <tr><td>IconButton</td><td>Icon as button</td><td>icon, onPressed, tooltip</td></tr>
+      <tr><td>GestureDetector</td><td>Tap, swipe, drag events</td><td>onTap, onLongPress, onPanUpdate</td></tr>
+      <tr><td>InkWell</td><td>Tap with ripple effect</td><td>onTap, child, borderRadius</td></tr>
+      <tr><td>Card</td><td>Material card</td><td>elevation, shape, child, color</td></tr>
+      <tr><td>Divider</td><td>Horizontal line</td><td>thickness, color, indent</td></tr>
+      <tr><td>CircularProgressIndicator</td><td>Loading spinner</td><td>value, color, strokeWidth</td></tr>
+      <tr><td>LinearProgressIndicator</td><td>Loading bar</td><td>value, backgroundColor</td></tr>
+      <tr><td>SnackBar</td><td>Brief notification</td><td>content, action, duration</td></tr>
+      <tr><td>Dialog</td><td>Popup dialog</td><td>AlertDialog, SimpleDialog, showDialog()</td></tr>
+      <tr><td>BottomSheet</td><td>Slide-up panel</td><td>showModalBottomSheet()</td></tr>
+    </table>
+  </section>
+
+  <!-- ===================== LAYOUT ===================== -->
+  <section class="section" id="layout-widgets">
+    <div class="section-tag">07 — Layout</div>
+    <h2>Layout Widgets <span class="level-badge level-intermediate">Intermediate</span></h2>
+    <div class="divider"></div>
+
+    <h3>Column & Row</h3>
+<pre data-lang="dart"><span class="cm">// Column — vertical stack</span>
+<span class="cls">Column</span>(
+  mainAxisAlignment: <span class="cls">MainAxisAlignment</span>.center,     <span class="cm">// along main axis (vertical)</span>
+  crossAxisAlignment: <span class="cls">CrossAxisAlignment</span>.stretch, <span class="cm">// along cross axis (horizontal)</span>
+  children: [
+    <span class="cls">Text</span>(<span class="str">'Item 1'</span>),
+    <span class="cls">SizedBox</span>(height: <span class="num">16</span>),  <span class="cm">// spacer</span>
+    <span class="cls">Text</span>(<span class="str">'Item 2'</span>),
+  ],
+)
+
+<span class="cm">// Row — horizontal stack</span>
+<span class="cls">Row</span>(
+  mainAxisAlignment: <span class="cls">MainAxisAlignment</span>.spaceBetween,
+  children: [
+    <span class="cls">Text</span>(<span class="str">'Left'</span>),
+    <span class="cls">Expanded</span>(child: <span class="cls">Text</span>(<span class="str">'Middle takes remaining space'</span>)),
+    <span class="cls">Text</span>(<span class="str">'Right'</span>),
+  ],
+)</pre>
+
+    <h3>Stack — Overlapping Widgets</h3>
+<pre data-lang="dart"><span class="cls">Stack</span>(
+  alignment: <span class="cls">Alignment</span>.center,
+  children: [
+    <span class="cm">// Bottom layer</span>
+    <span class="cls">Container</span>(width: <span class="num">200</span>, height: <span class="num">200</span>, color: <span class="cls">Colors</span>.blue),
+    <span class="cm">// Top layer</span>
+    <span class="kw">const</span> <span class="cls">Text</span>(<span class="str">'Overlaid text'</span>, style: <span class="cls">TextStyle</span>(color: <span class="cls">Colors</span>.white)),
+    <span class="cm">// Positioned layer</span>
+    <span class="cls">Positioned</span>(
+      bottom: <span class="num">10</span>, right: <span class="num">10</span>,
+      child: <span class="cls">Icon</span>(<span class="cls">Icons</span>.star, color: <span class="cls">Colors</span>.yellow),
+    ),
+  ],
+)</pre>
+
+    <h3>ListView — Scrollable List</h3>
+<pre data-lang="dart"><span class="cm">// Simple ListView</span>
+<span class="cls">ListView</span>(
+  children: [<span class="cls">Text</span>(<span class="str">'A'</span>), <span class="cls">Text</span>(<span class="str">'B'</span>), <span class="cls">Text</span>(<span class="str">'C'</span>)],
+)
+
+<span class="cm">// ListView.builder — efficient, lazy-loaded list (use for large lists!)</span>
+<span class="cls">ListView</span>.<span class="fn">builder</span>(
+  itemCount: items.length,
+  itemBuilder: (context, index) {
+    <span class="kw">return</span> <span class="cls">ListTile</span>(
+      leading: <span class="cls">Icon</span>(<span class="cls">Icons</span>.person),
+      title: <span class="cls">Text</span>(items[index].name),
+      subtitle: <span class="cls">Text</span>(items[index].email),
+      trailing: <span class="cls">IconButton</span>(
+        icon: <span class="cls">Icon</span>(<span class="cls">Icons</span>.delete),
+        onPressed: () => <span class="fn">deleteItem</span>(index),
+      ),
+    );
+  },
+)
+
+<span class="cm">// ListView.separated — list with dividers</span>
+<span class="cls">ListView</span>.<span class="fn">separated</span>(
+  itemCount: items.length,
+  separatorBuilder: (_, __) => <span class="kw">const</span> <span class="cls">Divider</span>(),
+  itemBuilder: (context, index) => <span class="cls">Text</span>(items[index]),
+)</pre>
+
+    <h3>GridView</h3>
+<pre data-lang="dart"><span class="cls">GridView</span>.<span class="fn">builder</span>(
+  gridDelegate: <span class="kw">const</span> <span class="cls">SliverGridDelegateWithFixedCrossAxisCount</span>(
+    crossAxisCount: <span class="num">2</span>,      <span class="cm">// 2 columns</span>
+    crossAxisSpacing: <span class="num">10</span>,
+    mainAxisSpacing: <span class="num">10</span>,
+    childAspectRatio: <span class="num">0.75</span>,
+  ),
+  itemCount: products.length,
+  itemBuilder: (ctx, i) => <span class="cls">ProductCard</span>(product: products[i]),
+)</pre>
+
+    <h3>Flexible & Expanded</h3>
+<pre data-lang="dart"><span class="cls">Row</span>(
+  children: [
+    <span class="cm">// Expanded takes all available space</span>
+    <span class="cls">Expanded</span>(
+      flex: <span class="num">2</span>,   <span class="cm">// takes 2/3 of space</span>
+      child: <span class="cls">Container</span>(color: <span class="cls">Colors</span>.red),
+    ),
+    <span class="cls">Expanded</span>(
+      flex: <span class="num">1</span>,   <span class="cm">// takes 1/3 of space</span>
+      child: <span class="cls">Container</span>(color: <span class="cls">Colors</span>.blue),
+    ),
+  ],
+)</pre>
+  </section>
+
+  <!-- ===================== INPUT WIDGETS ===================== -->
+  <section class="section" id="input-widgets">
+    <div class="section-tag">08 — Inputs</div>
+    <h2>Input Widgets <span class="level-badge level-intermediate">Intermediate</span></h2>
+    <div class="divider"></div>
+
+    <h3>TextField</h3>
+<pre data-lang="dart"><span class="kw">class</span> <span class="cls">_MyFormState</span> <span class="kw">extends</span> <span class="cls">State</span>&lt;<span class="cls">MyForm</span>&gt; {
+  <span class="kw">final</span> _controller = <span class="cls">TextEditingController</span>();
+  <span class="kw">final</span> _focusNode = <span class="cls">FocusNode</span>();
+
+  <span class="ann">@override</span>
+  <span class="kw">void</span> <span class="fn">dispose</span>() {
+    _controller.<span class="fn">dispose</span>();  <span class="cm">// Always dispose!</span>
+    _focusNode.<span class="fn">dispose</span>();
+    <span class="kw">super</span>.<span class="fn">dispose</span>();
+  }
+
+  <span class="cls">Widget</span> <span class="fn">build</span>(<span class="cls">BuildContext</span> context) {
+    <span class="kw">return</span> <span class="cls">TextField</span>(
+      controller: _controller,
+      focusNode: _focusNode,
+      decoration: <span class="kw">const</span> <span class="cls">InputDecoration</span>(
+        labelText: <span class="str">'Enter name'</span>,
+        hintText: <span class="str">'John Doe'</span>,
+        prefixIcon: <span class="cls">Icon</span>(<span class="cls">Icons</span>.person),
+        border: <span class="cls">OutlineInputBorder</span>(),
+      ),
+      keyboardType: <span class="cls">TextInputType</span>.emailAddress,
+      obscureText: <span class="kw">false</span>,   <span class="cm">// true for passwords</span>
+      onChanged: (val) => <span class="fn">print</span>(val),
+      onSubmitted: (val) => <span class="fn">handleSubmit</span>(val),
+    );
+  }
+}</pre>
+
+    <h3>Checkbox, Radio, Switch, Slider</h3>
+<pre data-lang="dart"><span class="cm">// Checkbox</span>
+<span class="cls">Checkbox</span>(
+  value: _isChecked,
+  onChanged: (val) => <span class="fn">setState</span>(() => _isChecked = val!),
+)
+
+<span class="cm">// Switch</span>
+<span class="cls">Switch</span>(
+  value: _isDarkMode,
+  activeColor: <span class="cls">Colors</span>.blue,
+  onChanged: (val) => <span class="fn">setState</span>(() => _isDarkMode = val),
+)
+
+<span class="cm">// Radio buttons</span>
+<span class="cls">Column</span>(children: [
+  <span class="cls">RadioListTile</span>&lt;<span class="cls">String</span>&gt;(
+    title: <span class="kw">const</span> <span class="cls">Text</span>(<span class="str">'Option A'</span>),
+    value: <span class="str">'A'</span>,
+    groupValue: _selected,
+    onChanged: (v) => <span class="fn">setState</span>(() => _selected = v!),
+  ),
+  <span class="cls">RadioListTile</span>&lt;<span class="cls">String</span>&gt;(
+    title: <span class="kw">const</span> <span class="cls">Text</span>(<span class="str">'Option B'</span>),
+    value: <span class="str">'B'</span>,
+    groupValue: _selected,
+    onChanged: (v) => <span class="fn">setState</span>(() => _selected = v!),
+  ),
+])
+
+<span class="cm">// Slider</span>
+<span class="cls">Slider</span>(
+  value: _sliderVal,
+  min: <span class="num">0</span>, max: <span class="num">100</span>,
+  divisions: <span class="num">10</span>,
+  label: _sliderVal.<span class="fn">round</span>().<span class="fn">toString</span>(),
+  onChanged: (v) => <span class="fn">setState</span>(() => _sliderVal = v),
+)
+
+<span class="cm">// DropdownButton</span>
+<span class="cls">DropdownButton</span>&lt;<span class="cls">String</span>&gt;(
+  value: _selectedFruit,
+  items: [<span class="str">'Apple'</span>, <span class="str">'Banana'</span>, <span class="str">'Mango'</span>]
+    .<span class="fn">map</span>((f) => <span class="cls">DropdownMenuItem</span>(value: f, child: <span class="cls">Text</span>(f)))
+    .<span class="fn">toList</span>(),
+  onChanged: (val) => <span class="fn">setState</span>(() => _selectedFruit = val!),
+)</pre>
+  </section>
+
+  <!-- ===================== NAVIGATION ===================== -->
+  <section class="section" id="navigation">
+    <div class="section-tag">09 — Navigation</div>
+    <h2>Navigation & Routes <span class="level-badge level-intermediate">Intermediate</span></h2>
+    <div class="divider"></div>
+
+    <h3>Named Routes (Recommended)</h3>
+<pre data-lang="dart"><span class="cm">// In MaterialApp:</span>
+<span class="cls">MaterialApp</span>(
+  initialRoute: <span class="str">'/'</span>,
+  routes: {
+    <span class="str">'/'</span>: (ctx) => <span class="kw">const</span> <span class="cls">HomeScreen</span>(),
+    <span class="str">'/detail'</span>: (ctx) => <span class="kw">const</span> <span class="cls">DetailScreen</span>(),
+    <span class="str">'/profile'</span>: (ctx) => <span class="kw">const</span> <span class="cls">ProfileScreen</span>(),
+  },
+)
+
+<span class="cm">// Navigate to a route:</span>
+<span class="cls">Navigator</span>.<span class="fn">pushNamed</span>(context, <span class="str">'/detail'</span>);
+
+<span class="cm">// Navigate with arguments:</span>
+<span class="cls">Navigator</span>.<span class="fn">pushNamed</span>(context, <span class="str">'/detail'</span>, arguments: {<span class="str">'id'</span>: <span class="num">42</span>});
+
+<span class="cm">// In destination screen, receive args:</span>
+<span class="kw">final</span> args = <span class="cls">ModalRoute</span>.<span class="fn">of</span>(context)!.settings.arguments <span class="kw">as</span> <span class="cls">Map</span>;
+<span class="kw">final</span> id = args[<span class="str">'id'</span>];
+
+<span class="cm">// Go back:</span>
+<span class="cls">Navigator</span>.<span class="fn">pop</span>(context);
+
+<span class="cm">// Replace current route:</span>
+<span class="cls">Navigator</span>.<span class="fn">pushReplacementNamed</span>(context, <span class="str">'/home'</span>);
+
+<span class="cm">// Clear stack and go to route (e.g. after login):</span>
+<span class="cls">Navigator</span>.<span class="fn">pushNamedAndRemoveUntil</span>(context, <span class="str">'/home'</span>, (route) => <span class="kw">false</span>);</pre>
+
+    <h3>Bottom Navigation Bar</h3>
+<pre data-lang="dart"><span class="kw">class</span> <span class="cls">MainScreen</span> <span class="kw">extends</span> <span class="cls">StatefulWidget</span> {
+  <span class="kw">const</span> <span class="cls">MainScreen</span>({<span class="kw">super</span>.key});
+  <span class="ann">@override</span>
+  <span class="cls">State</span>&lt;<span class="cls">MainScreen</span>&gt; <span class="fn">createState</span>() => _MainScreenState();
+}
+
+<span class="kw">class</span> <span class="cls">_MainScreenState</span> <span class="kw">extends</span> <span class="cls">State</span>&lt;<span class="cls">MainScreen</span>&gt; {
+  <span class="kw">int</span> _currentIndex = <span class="num">0</span>;
+  <span class="kw">final</span> _screens = [<span class="cls">HomeScreen</span>(), <span class="cls">SearchScreen</span>(), <span class="cls">ProfileScreen</span>()];
+
+  <span class="ann">@override</span>
+  <span class="cls">Widget</span> <span class="fn">build</span>(<span class="cls">BuildContext</span> context) {
+    <span class="kw">return</span> <span class="cls">Scaffold</span>(
+      body: _screens[_currentIndex],
+      bottomNavigationBar: <span class="cls">BottomNavigationBar</span>(
+        currentIndex: _currentIndex,
+        onTap: (i) => <span class="fn">setState</span>(() => _currentIndex = i),
+        items: <span class="kw">const</span> [
+          <span class="cls">BottomNavigationBarItem</span>(icon: <span class="cls">Icon</span>(<span class="cls">Icons</span>.home), label: <span class="str">'Home'</span>),
+          <span class="cls">BottomNavigationBarItem</span>(icon: <span class="cls">Icon</span>(<span class="cls">Icons</span>.search), label: <span class="str">'Search'</span>),
+          <span class="cls">BottomNavigationBarItem</span>(icon: <span class="cls">Icon</span>(<span class="cls">Icons</span>.person), label: <span class="str">'Profile'</span>),
+        ],
+      ),
+    );
+  }
+}</pre>
+
+    <div class="callout callout-info">
+      <strong>📦 GoRouter</strong>
+      For complex navigation needs (deep links, web URLs, nested navigation), use the <code>go_router</code> package — it's now the officially recommended routing solution for Flutter.
+    </div>
+  </section>
+
+  <!-- ===================== STATE MANAGEMENT ===================== -->
+  <section class="section" id="state">
+    <div class="section-tag">10 — State</div>
+    <h2>State Management Basics <span class="level-badge level-intermediate">Intermediate</span></h2>
+    <div class="divider"></div>
+
+    <p>State is data that can change over time and affects the UI. There are several levels of state management:</p>
+
+    <h3>setState — Local State</h3>
+<pre data-lang="dart"><span class="cm">// Best for: simple, local UI state (toggles, counters, form values)</span>
+<span class="fn">setState</span>(() {
+  _counter++;
+  _isLoading = <span class="kw">false</span>;
+  items.<span class="fn">add</span>(newItem);
+});</pre>
+
+    <h3>InheritedWidget — Passing Data Down</h3>
+<pre data-lang="dart"><span class="cm">// Best for: passing data many levels deep without prop-drilling</span>
+<span class="kw">class</span> <span class="cls">UserProvider</span> <span class="kw">extends</span> <span class="cls">InheritedWidget</span> {
+  <span class="kw">final</span> <span class="cls">User</span> user;
+  <span class="kw">const</span> <span class="cls">UserProvider</span>({<span class="kw">required</span> <span class="kw">this</span>.user, <span class="kw">required</span> <span class="kw">super</span>.child, <span class="kw">super</span>.key});
+
+  <span class="kw">static</span> <span class="cls">UserProvider</span> <span class="fn">of</span>(<span class="cls">BuildContext</span> context) {
+    <span class="kw">return</span> context.<span class="fn">dependOnInheritedWidgetOfExactType</span>&lt;<span class="cls">UserProvider</span>&gt;()!;
+  }
+
+  <span class="ann">@override</span>
+  <span class="kw">bool</span> <span class="fn">updateShouldNotify</span>(<span class="cls">UserProvider</span> old) => user != old.user;
+}</pre>
+  </section>
+
+  <!-- ===================== ASYNC ===================== -->
+  <section class="section" id="async">
+    <div class="section-tag">11 — Async</div>
+    <h2>Async, Futures & Streams <span class="level-badge level-intermediate">Intermediate</span></h2>
+    <div class="divider"></div>
+
+    <h3>Future & async/await</h3>
+<pre data-lang="dart"><span class="cm">// async function returns a Future</span>
+<span class="cls">Future</span>&lt;<span class="cls">User</span>&gt; <span class="fn">fetchUser</span>(<span class="cls">int</span> id) <span class="kw">async</span> {
+  <span class="kw">try</span> {
+    <span class="kw">final</span> response = <span class="kw">await</span> http.<span class="fn">get</span>(<span class="cls">Uri</span>.<span class="fn">parse</span>(<span class="str">'https://api.example.com/users/$id'</span>));
+    <span class="kw">if</span> (response.statusCode == <span class="num">200</span>) {
+      <span class="kw">return</span> <span class="cls">User</span>.<span class="fn">fromJson</span>(<span class="fn">jsonDecode</span>(response.body));
+    }
+    <span class="kw">throw</span> <span class="cls">Exception</span>(<span class="str">'Failed to load user'</span>);
+  } <span class="kw">catch</span> (e) {
+    <span class="kw">throw</span> <span class="cls">Exception</span>(<span class="str">'Network error: $e'</span>);
+  }
+}</pre>
+
+    <h3>FutureBuilder — Show async data in UI</h3>
+<pre data-lang="dart"><span class="cls">FutureBuilder</span>&lt;<span class="cls">User</span>&gt;(
+  future: <span class="fn">fetchUser</span>(<span class="num">1</span>),
+  builder: (context, snapshot) {
+    <span class="kw">if</span> (snapshot.connectionState == <span class="cls">ConnectionState</span>.waiting) {
+      <span class="kw">return</span> <span class="kw">const</span> <span class="cls">CircularProgressIndicator</span>();
+    }
+    <span class="kw">if</span> (snapshot.hasError) {
+      <span class="kw">return</span> <span class="cls">Text</span>(<span class="str">'Error: ${snapshot.error}'</span>);
+    }
+    <span class="kw">if</span> (!snapshot.hasData) {
+      <span class="kw">return</span> <span class="kw">const</span> <span class="cls">Text</span>(<span class="str">'No data'</span>);
+    }
+    <span class="kw">final</span> user = snapshot.data!;
+    <span class="kw">return</span> <span class="cls">Text</span>(<span class="str">'Hello, ${user.name}!'</span>);
+  },
+)</pre>
+
+    <h3>Stream & StreamBuilder — Realtime Data</h3>
+<pre data-lang="dart"><span class="cm">// Stream emits multiple values over time</span>
+<span class="cls">Stream</span>&lt;<span class="cls">int</span>&gt; <span class="fn">countDown</span>() <span class="kw">async</span>* {
+  <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">10</span>; i >= <span class="num">0</span>; i--) {
+    <span class="kw">yield</span> i;
+    <span class="kw">await</span> <span class="cls">Future</span>.<span class="fn">delayed</span>(<span class="kw">const</span> <span class="cls">Duration</span>(seconds: <span class="num">1</span>));
+  }
+}
+
+<span class="cm">// StreamBuilder in UI</span>
+<span class="cls">StreamBuilder</span>&lt;<span class="cls">int</span>&gt;(
+  stream: <span class="fn">countDown</span>(),
+  builder: (context, snapshot) {
+    <span class="kw">if</span> (snapshot.hasData) {
+      <span class="kw">return</span> <span class="cls">Text</span>(<span class="str">'${snapshot.data}'</span>, style: <span class="cls">TextStyle</span>(fontSize: <span class="num">48</span>));
+    }
+    <span class="kw">return</span> <span class="kw">const</span> <span class="cls">Text</span>(<span class="str">'Done!'</span>);
+  },
+)</pre>
+  </section>
+
+  <!-- ===================== HTTP ===================== -->
+  <section class="section" id="http">
+    <div class="section-tag">12 — HTTP</div>
+    <h2>HTTP & REST APIs <span class="level-badge level-intermediate">Intermediate</span></h2>
+    <div class="divider"></div>
+
+<pre data-lang="dart"><span class="cm">// pubspec.yaml: http: ^1.1.0</span>
+<span class="kw">import</span> <span class="str">'dart:convert'</span>;
+<span class="kw">import</span> <span class="str">'package:http/http.dart'</span> <span class="kw">as</span> http;
+
+<span class="cm">// Complete API service class</span>
+<span class="kw">class</span> <span class="cls">ApiService</span> {
+  <span class="kw">static</span> <span class="kw">const</span> _baseUrl = <span class="str">'https://jsonplaceholder.typicode.com'</span>;
+
+  <span class="cm">// GET request</span>
+  <span class="kw">static</span> <span class="cls">Future</span>&lt;<span class="cls">List</span>&lt;<span class="cls">Post</span>&gt;&gt; <span class="fn">getPosts</span>() <span class="kw">async</span> {
+    <span class="kw">final</span> response = <span class="kw">await</span> http.<span class="fn">get</span>(<span class="cls">Uri</span>.<span class="fn">parse</span>(<span class="str">'$_baseUrl/posts'</span>));
+    <span class="kw">if</span> (response.statusCode == <span class="num">200</span>) {
+      <span class="kw">final</span> List data = <span class="fn">jsonDecode</span>(response.body);
+      <span class="kw">return</span> data.<span class="fn">map</span>((e) => <span class="cls">Post</span>.<span class="fn">fromJson</span>(e)).<span class="fn">toList</span>();
+    }
+    <span class="kw">throw</span> <span class="cls">Exception</span>(<span class="str">'Failed: ${response.statusCode}'</span>);
+  }
+
+  <span class="cm">// POST request</span>
+  <span class="kw">static</span> <span class="cls">Future</span>&lt;<span class="cls">Post</span>&gt; <span class="fn">createPost</span>(<span class="cls">Post</span> post) <span class="kw">async</span> {
+    <span class="kw">final</span> response = <span class="kw">await</span> http.<span class="fn">post</span>(
+      <span class="cls">Uri</span>.<span class="fn">parse</span>(<span class="str">'$_baseUrl/posts'</span>),
+      headers: {<span class="str">'Content-Type'</span>: <span class="str">'application/json'</span>},
+      body: <span class="fn">jsonEncode</span>(post.<span class="fn">toJson</span>()),
+    );
+    <span class="kw">return</span> <span class="cls">Post</span>.<span class="fn">fromJson</span>(<span class="fn">jsonDecode</span>(response.body));
+  }
+
+  <span class="cm">// PUT request (update)</span>
+  <span class="kw">static</span> <span class="cls">Future</span>&lt;<span class="kw">void</span>&gt; <span class="fn">updatePost</span>(<span class="cls">int</span> id, <span class="cls">Post</span> post) <span class="kw">async</span> {
+    <span class="kw">await</span> http.<span class="fn">put</span>(
+      <span class="cls">Uri</span>.<span class="fn">parse</span>(<span class="str">'$_baseUrl/posts/$id'</span>),
+      headers: {<span class="str">'Content-Type'</span>: <span class="str">'application/json'</span>},
+      body: <span class="fn">jsonEncode</span>(post.<span class="fn">toJson</span>()),
+    );
+  }
+
+  <span class="cm">// DELETE request</span>
+  <span class="kw">static</span> <span class="cls">Future</span>&lt;<span class="kw">void</span>&gt; <span class="fn">deletePost</span>(<span class="cls">int</span> id) <span class="kw">async</span> {
+    <span class="kw">await</span> http.<span class="fn">delete</span>(<span class="cls">Uri</span>.<span class="fn">parse</span>(<span class="str">'$_baseUrl/posts/$id'</span>));
+  }
+}
+
+<span class="cm">// Model class with JSON parsing</span>
+<span class="kw">class</span> <span class="cls">Post</span> {
+  <span class="kw">final</span> <span class="cls">int</span> id;
+  <span class="kw">final</span> <span class="cls">String</span> title;
+  <span class="kw">final</span> <span class="cls">String</span> body;
+
+  <span class="kw">const</span> <span class="cls">Post</span>({<span class="kw">required</span> <span class="kw">this</span>.id, <span class="kw">required</span> <span class="kw">this</span>.title, <span class="kw">required</span> <span class="kw">this</span>.body});
+
+  <span class="kw">factory</span> <span class="cls">Post</span>.<span class="fn">fromJson</span>(<span class="cls">Map</span>&lt;<span class="cls">String</span>, <span class="kw">dynamic</span>&gt; json) =>
+    <span class="cls">Post</span>(id: json[<span class="str">'id'</span>], title: json[<span class="str">'title'</span>], body: json[<span class="str">'body'</span>]);
+
+  <span class="cls">Map</span>&lt;<span class="cls">String</span>, <span class="kw">dynamic</span>&gt; <span class="fn">toJson</span>() => {<span class="str">'id'</span>: id, <span class="str">'title'</span>: title, <span class="str">'body'</span>: body};
+}</pre>
+  </section>
+
+  <!-- ===================== LOCAL STORAGE ===================== -->
+  <section class="section" id="local-storage">
+    <div class="section-tag">13 — Storage</div>
+    <h2>Local Storage <span class="level-badge level-intermediate">Intermediate</span></h2>
+    <div class="divider"></div>
+
+    <h3>SharedPreferences — Key/Value Store</h3>
+<pre data-lang="dart"><span class="cm">// pubspec.yaml: shared_preferences: ^2.2.0</span>
+<span class="kw">import</span> <span class="str">'package:shared_preferences/shared_preferences.dart'</span>;
+
+<span class="kw">class</span> <span class="cls">PrefsService</span> {
+  <span class="kw">static</span> <span class="cls">Future</span>&lt;<span class="kw">void</span>&gt; <span class="fn">saveToken</span>(<span class="cls">String</span> token) <span class="kw">async</span> {
+    <span class="kw">final</span> prefs = <span class="kw">await</span> <span class="cls">SharedPreferences</span>.<span class="fn">getInstance</span>();
+    <span class="kw">await</span> prefs.<span class="fn">setString</span>(<span class="str">'auth_token'</span>, token);
+  }
+
+  <span class="kw">static</span> <span class="cls">Future</span>&lt;<span class="cls">String</span>?&gt; <span class="fn">getToken</span>() <span class="kw">async</span> {
+    <span class="kw">final</span> prefs = <span class="kw">await</span> <span class="cls">SharedPreferences</span>.<span class="fn">getInstance</span>();
+    <span class="kw">return</span> prefs.<span class="fn">getString</span>(<span class="str">'auth_token'</span>);
+  }
+
+  <span class="kw">static</span> <span class="cls">Future</span>&lt;<span class="kw">void</span>&gt; <span class="fn">clear</span>() <span class="kw">async</span> {
+    <span class="kw">final</span> prefs = <span class="kw">await</span> <span class="cls">SharedPreferences</span>.<span class="fn">getInstance</span>();
+    <span class="kw">await</span> prefs.<span class="fn">clear</span>();
+  }
+}
+
+<span class="cm">// Supports: setString, setInt, setBool, setDouble, setStringList</span></pre>
+
+    <h3>SQLite with sqflite</h3>
+<pre data-lang="dart"><span class="cm">// pubspec.yaml: sqflite: ^2.3.0, path: ^1.8.0</span>
+<span class="kw">import</span> <span class="str">'package:sqflite/sqflite.dart'</span>;
+<span class="kw">import</span> <span class="str">'package:path/path.dart'</span>;
+
+<span class="kw">class</span> <span class="cls">DatabaseHelper</span> {
+  <span class="kw">static</span> <span class="cls">Database</span>? _db;
+
+  <span class="kw">static</span> <span class="cls">Future</span>&lt;<span class="cls">Database</span>&gt; <span class="fn">getDatabase</span>() <span class="kw">async</span> {
+    <span class="kw">if</span> (_db != <span class="kw">null</span>) <span class="kw">return</span> _db!;
+    _db = <span class="kw">await</span> <span class="fn">openDatabase</span>(
+      <span class="fn">join</span>(<span class="kw">await</span> <span class="fn">getDatabasesPath</span>(), <span class="str">'app.db'</span>),
+      version: <span class="num">1</span>,
+      onCreate: (db, version) <span class="kw">async</span> {
+        <span class="kw">await</span> db.<span class="fn">execute</span>(<span class="str">'''
+          CREATE TABLE users (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            email TEXT UNIQUE
+          )
+        '''</span>);
+      },
+    );
+    <span class="kw">return</span> _db!;
+  }
+
+  <span class="kw">static</span> <span class="cls">Future</span>&lt;<span class="kw">int</span>&gt; <span class="fn">insertUser</span>(<span class="cls">Map</span>&lt;<span class="cls">String</span>, <span class="kw">dynamic</span>&gt; user) <span class="kw">async</span> {
+    <span class="kw">final</span> db = <span class="kw">await</span> <span class="fn">getDatabase</span>();
+    <span class="kw">return</span> <span class="kw">await</span> db.<span class="fn">insert</span>(<span class="str">'users'</span>, user);
+  }
+
+  <span class="kw">static</span> <span class="cls">Future</span>&lt;<span class="cls">List</span>&lt;<span class="cls">Map</span>&lt;<span class="cls">String</span>, <span class="kw">dynamic</span>&gt;&gt;&gt; <span class="fn">getUsers</span>() <span class="kw">async</span> {
+    <span class="kw">final</span> db = <span class="kw">await</span> <span class="fn">getDatabase</span>();
+    <span class="kw">return</span> <span class="kw">await</span> db.<span class="fn">query</span>(<span class="str">'users'</span>);
+  }
+}</pre>
+  </section>
+
+  <!-- ===================== FORMS ===================== -->
+  <section class="section" id="forms">
+    <div class="section-tag">14 — Forms</div>
+    <h2>Forms & Validation <span class="level-badge level-intermediate">Intermediate</span></h2>
+    <div class="divider"></div>
+
+<pre data-lang="dart"><span class="kw">class</span> <span class="cls">LoginForm</span> <span class="kw">extends</span> <span class="cls">StatefulWidget</span> {
+  <span class="kw">const</span> <span class="cls">LoginForm</span>({<span class="kw">super</span>.key});
+  <span class="ann">@override</span>
+  <span class="cls">State</span>&lt;<span class="cls">LoginForm</span>&gt; <span class="fn">createState</span>() => _LoginFormState();
+}
+
+<span class="kw">class</span> <span class="cls">_LoginFormState</span> <span class="kw">extends</span> <span class="cls">State</span>&lt;<span class="cls">LoginForm</span>&gt; {
+  <span class="kw">final</span> _formKey = <span class="cls">GlobalKey</span>&lt;<span class="cls">FormState</span>&gt;();  <span class="cm">// key to access form</span>
+  <span class="kw">final</span> _emailCtrl = <span class="cls">TextEditingController</span>();
+  <span class="kw">final</span> _passCtrl = <span class="cls">TextEditingController</span>();
+  <span class="kw">bool</span> _loading = <span class="kw">false</span>;
+
+  <span class="kw">void</span> <span class="fn">_submit</span>() <span class="kw">async</span> {
+    <span class="kw">if</span> (!_formKey.currentState!.<span class="fn">validate</span>()) <span class="kw">return</span>;
+    <span class="fn">setState</span>(() => _loading = <span class="kw">true</span>);
+    <span class="kw">await</span> <span class="cls">Future</span>.<span class="fn">delayed</span>(<span class="kw">const</span> <span class="cls">Duration</span>(seconds: <span class="num">2</span>)); <span class="cm">// simulate API</span>
+    <span class="fn">setState</span>(() => _loading = <span class="kw">false</span>);
+    <span class="cm">// Navigate to home...</span>
+  }
+
+  <span class="ann">@override</span>
+  <span class="kw">void</span> <span class="fn">dispose</span>() {
+    _emailCtrl.<span class="fn">dispose</span>(); _passCtrl.<span class="fn">dispose</span>(); <span class="kw">super</span>.<span class="fn">dispose</span>();
+  }
+
+  <span class="ann">@override</span>
+  <span class="cls">Widget</span> <span class="fn">build</span>(<span class="cls">BuildContext</span> context) {
+    <span class="kw">return</span> <span class="cls">Form</span>(
+      key: _formKey,
+      child: <span class="cls">Column</span>(children: [
+        <span class="cls">TextFormField</span>(
+          controller: _emailCtrl,
+          decoration: <span class="kw">const</span> <span class="cls">InputDecoration</span>(
+            labelText: <span class="str">'Email'</span>,
+            prefixIcon: <span class="cls">Icon</span>(<span class="cls">Icons</span>.email),
+            border: <span class="cls">OutlineInputBorder</span>(),
+          ),
+          keyboardType: <span class="cls">TextInputType</span>.emailAddress,
+          validator: (value) {
+            <span class="kw">if</span> (value == <span class="kw">null</span> || value.<span class="fn">isEmpty</span>) <span class="kw">return</span> <span class="str">'Email is required'</span>;
+            <span class="kw">if</span> (!value.<span class="fn">contains</span>(<span class="str">'@'</span>)) <span class="kw">return</span> <span class="str">'Enter a valid email'</span>;
+            <span class="kw">return</span> <span class="kw">null</span>; <span class="cm">// null means valid</span>
+          },
+        ),
+        <span class="kw">const</span> <span class="cls">SizedBox</span>(height: <span class="num">16</span>),
+        <span class="cls">TextFormField</span>(
+          controller: _passCtrl,
+          obscureText: <span class="kw">true</span>,
+          decoration: <span class="kw">const</span> <span class="cls">InputDecoration</span>(
+            labelText: <span class="str">'Password'</span>,
+            prefixIcon: <span class="cls">Icon</span>(<span class="cls">Icons</span>.lock),
+            border: <span class="cls">OutlineInputBorder</span>(),
+          ),
+          validator: (value) {
+            <span class="kw">if</span> (value == <span class="kw">null</span> || value.length &lt; <span class="num">6</span>) <span class="kw">return</span> <span class="str">'Min 6 characters'</span>;
+            <span class="kw">return</span> <span class="kw">null</span>;
+          },
+        ),
+        <span class="kw">const</span> <span class="cls">SizedBox</span>(height: <span class="num">24</span>),
+        <span class="cls">SizedBox</span>(
+          width: <span class="kw">double</span>.infinity,
+          child: <span class="cls">ElevatedButton</span>(
+            onPressed: _loading ? <span class="kw">null</span> : _submit,
+            child: _loading
+              ? <span class="kw">const</span> <span class="cls">CircularProgressIndicator</span>()
+              : <span class="kw">const</span> <span class="cls">Text</span>(<span class="str">'Login'</span>),
+          ),
+        ),
+      ]),
+    );
+  }
+}</pre>
+  </section>
+
+  <!-- ===================== ANIMATIONS ===================== -->
+  <section class="section" id="animations">
+    <div class="section-tag">15 — Animations</div>
+    <h2>Animations <span class="level-badge level-intermediate">Intermediate</span></h2>
+    <div class="divider"></div>
+
+    <h3>AnimatedContainer — Implicit Animations</h3>
+<pre data-lang="dart"><span class="cm">// Implicitly animated widgets — just change values & Flutter animates!</span>
+<span class="cls">AnimatedContainer</span>(
+  duration: <span class="kw">const</span> <span class="cls">Duration</span>(milliseconds: <span class="num">300</span>),
+  curve: <span class="cls">Curves</span>.easeInOut,
+  width: _isExpanded ? <span class="num">200</span> : <span class="num">100</span>,
+  height: _isExpanded ? <span class="num">200</span> : <span class="num">100</span>,
+  color: _isExpanded ? <span class="cls">Colors</span>.blue : <span class="cls">Colors</span>.red,
+  child: <span class="kw">const</span> <span class="cls">Text</span>(<span class="str">'Tap me'</span>),
+)
+
+<span class="cm">// Other implicit widgets:</span>
+<span class="cm">// AnimatedOpacity, AnimatedPadding, AnimatedAlign, AnimatedCrossFade</span>
+<span class="cm">// AnimatedSwitcher — animate between two widgets</span>
+<span class="cls">AnimatedSwitcher</span>(
+  duration: <span class="kw">const</span> <span class="cls">Duration</span>(milliseconds: <span class="num">400</span>),
+  child: _showFirst
+    ? <span class="cls">Icon</span>(<span class="cls">Icons</span>.play_arrow, key: <span class="cls">ValueKey</span>(<span class="str">'play'</span>))
+    : <span class="cls">Icon</span>(<span class="cls">Icons</span>.pause, key: <span class="cls">ValueKey</span>(<span class="str">'pause'</span>)),
+)</pre>
+
+    <h3>AnimationController — Explicit Animations</h3>
+<pre data-lang="dart"><span class="kw">class</span> <span class="cls">PulseWidget</span> <span class="kw">extends</span> <span class="cls">StatefulWidget</span> {
+  <span class="kw">const</span> <span class="cls">PulseWidget</span>({<span class="kw">super</span>.key});
+  <span class="ann">@override</span>
+  <span class="cls">State</span>&lt;<span class="cls">PulseWidget</span>&gt; <span class="fn">createState</span>() => _PulseWidgetState();
+}
+
+<span class="kw">class</span> <span class="cls">_PulseWidgetState</span> <span class="kw">extends</span> <span class="cls">State</span>&lt;<span class="cls">PulseWidget</span>&gt;
+    <span class="kw">with</span> <span class="cls">SingleTickerProviderStateMixin</span> {  <span class="cm">// provides vsync</span>
+  <span class="kw">late</span> <span class="cls">AnimationController</span> _controller;
+  <span class="kw">late</span> <span class="cls">Animation</span>&lt;<span class="kw">double</span>&gt; _scaleAnim;
+
+  <span class="ann">@override</span>
+  <span class="kw">void</span> <span class="fn">initState</span>() {
+    <span class="kw">super</span>.<span class="fn">initState</span>();
+    _controller = <span class="cls">AnimationController</span>(
+      vsync: <span class="kw">this</span>,
+      duration: <span class="kw">const</span> <span class="cls">Duration</span>(milliseconds: <span class="num">800</span>),
+    )..repeat(reverse: <span class="kw">true</span>);  <span class="cm">// loops back and forth</span>
+
+    _scaleAnim = <span class="cls">Tween</span>(<span class="prop">begin</span>: <span class="num">1.0</span>, <span class="prop">end</span>: <span class="num">1.3</span>).<span class="fn">animate</span>(
+      <span class="cls">CurvedAnimation</span>(parent: _controller, curve: <span class="cls">Curves</span>.easeInOut),
+    );
+  }
+
+  <span class="ann">@override</span>
+  <span class="kw">void</span> <span class="fn">dispose</span>() {
+    _controller.<span class="fn">dispose</span>();  <span class="cm">// always dispose!</span>
+    <span class="kw">super</span>.<span class="fn">dispose</span>();
+  }
+
+  <span class="ann">@override</span>
+  <span class="cls">Widget</span> <span class="fn">build</span>(<span class="cls">BuildContext</span> context) {
+    <span class="kw">return</span> <span class="cls">ScaleTransition</span>(
+      scale: _scaleAnim,
+      child: <span class="kw">const</span> <span class="cls">Icon</span>(<span class="cls">Icons</span>.favorite, color: <span class="cls">Colors</span>.red, size: <span class="num">50</span>),
+    );
+  }
+}</pre>
+
+    <h3>Hero Animation — Shared Element Transitions</h3>
+<pre data-lang="dart"><span class="cm">// On first screen:</span>
+<span class="cls">Hero</span>(
+  tag: <span class="str">'product-image-${product.id}'</span>,  <span class="cm">// must be unique</span>
+  child: <span class="cls">Image</span>.<span class="fn">network</span>(product.imageUrl),
+)
+
+<span class="cm">// On second screen (same tag = animated transition):</span>
+<span class="cls">Hero</span>(
+  tag: <span class="str">'product-image-${product.id}'</span>,
+  child: <span class="cls">Image</span>.<span class="fn">network</span>(product.imageUrl, width: <span class="num">300</span>),
+)</pre>
+  </section>
+
+  <!-- ===================== THEMES ===================== -->
+  <section class="section" id="themes">
+    <div class="section-tag">16 — Themes</div>
+    <h2>Themes & Styling <span class="level-badge level-intermediate">Intermediate</span></h2>
+    <div class="divider"></div>
+
+<pre data-lang="dart"><span class="kw">class</span> <span class="cls">AppTheme</span> {
+  <span class="kw">static</span> <span class="cls">ThemeData</span> <span class="fn">lightTheme</span>() => <span class="cls">ThemeData</span>(
+    useMaterial3: <span class="kw">true</span>,
+    colorScheme: <span class="cls">ColorScheme</span>.<span class="fn">fromSeed</span>(
+      seedColor: <span class="kw">const</span> <span class="cls">Color</span>(<span class="num">0xFF6750A4</span>),
+      brightness: <span class="cls">Brightness</span>.light,
+    ),
+    textTheme: <span class="kw">const</span> <span class="cls">TextTheme</span>(
+      displayLarge: <span class="cls">TextStyle</span>(fontSize: <span class="num">57</span>, fontWeight: <span class="cls">FontWeight</span>.bold),
+      headlineMedium: <span class="cls">TextStyle</span>(fontSize: <span class="num">28</span>, fontWeight: <span class="cls">FontWeight</span>.w600),
+      bodyLarge: <span class="cls">TextStyle</span>(fontSize: <span class="num">16</span>),
+    ),
+    elevatedButtonTheme: <span class="cls">ElevatedButtonThemeData</span>(
+      style: <span class="cls">ElevatedButton</span>.<span class="fn">styleFrom</span>(
+        minimumSize: <span class="kw">const</span> <span class="cls">Size</span>(<span class="kw">double</span>.infinity, <span class="num">50</span>),
+        shape: <span class="cls">RoundedRectangleBorder</span>(borderRadius: <span class="cls">BorderRadius</span>.<span class="fn">circular</span>(<span class="num">12</span>)),
+      ),
+    ),
+    inputDecorationTheme: <span class="cls">InputDecorationTheme</span>(
+      border: <span class="cls">OutlineInputBorder</span>(borderRadius: <span class="cls">BorderRadius</span>.<span class="fn">circular</span>(<span class="num">12</span>)),
+      filled: <span class="kw">true</span>,
+    ),
+  );
+
+  <span class="kw">static</span> <span class="cls">ThemeData</span> <span class="fn">darkTheme</span>() => <span class="cls">ThemeData</span>(
+    useMaterial3: <span class="kw">true</span>,
+    colorScheme: <span class="cls">ColorScheme</span>.<span class="fn">fromSeed</span>(
+      seedColor: <span class="kw">const</span> <span class="cls">Color</span>(<span class="num">0xFF6750A4</span>),
+      brightness: <span class="cls">Brightness</span>.dark,
+    ),
+  );
+}
+
+<span class="cm">// Usage in MaterialApp:</span>
+<span class="cls">MaterialApp</span>(
+  theme: <span class="cls">AppTheme</span>.<span class="fn">lightTheme</span>(),
+  darkTheme: <span class="cls">AppTheme</span>.<span class="fn">darkTheme</span>(),
+  themeMode: <span class="cls">ThemeMode</span>.system,  <span class="cm">// auto switch!</span>
+)
+
+<span class="cm">// Access theme in a widget:</span>
+<span class="kw">final</span> colors = <span class="cls">Theme</span>.<span class="fn">of</span>(context).colorScheme;
+<span class="kw">final</span> textStyle = <span class="cls">Theme</span>.<span class="fn">of</span>(context).textTheme.headlineMedium;</pre>
+  </section>
+
+  <!-- ===================== PROVIDER ===================== -->
+  <section class="section" id="provider">
+    <div class="section-tag">17 — State (Advanced)</div>
+    <h2>Provider Pattern <span class="level-badge level-advanced">Advanced</span></h2>
+    <div class="divider"></div>
+
+    <p>Provider is the officially recommended state management solution for most Flutter apps. It uses InheritedWidget under the hood.</p>
+
+<pre data-lang="dart"><span class="cm">// 1. Create a ChangeNotifier (your store)</span>
+<span class="cm">// lib/providers/cart_provider.dart</span>
+<span class="kw">import</span> <span class="str">'package:flutter/material.dart'</span>;
+
+<span class="kw">class</span> <span class="cls">CartProvider</span> <span class="kw">extends</span> <span class="cls">ChangeNotifier</span> {
+  <span class="kw">final</span> <span class="cls">List</span>&lt;<span class="cls">Product</span>&gt; _items = [];
+  <span class="cls">List</span>&lt;<span class="cls">Product</span>&gt; <span class="kw">get</span> items => <span class="cls">List</span>.<span class="fn">unmodifiable</span>(_items);
+  <span class="kw">int</span> <span class="kw">get</span> count => _items.length;
+  <span class="kw">double</span> <span class="kw">get</span> total => _items.<span class="fn">fold</span>(<span class="num">0</span>, (sum, item) => sum + item.price);
+
+  <span class="kw">void</span> <span class="fn">addItem</span>(<span class="cls">Product</span> product) {
+    _items.<span class="fn">add</span>(product);
+    <span class="fn">notifyListeners</span>();  <span class="cm">// triggers UI rebuild</span>
+  }
+
+  <span class="kw">void</span> <span class="fn">removeItem</span>(<span class="cls">String</span> productId) {
+    _items.<span class="fn">removeWhere</span>((p) => p.id == productId);
+    <span class="fn">notifyListeners</span>();
+  }
+
+  <span class="kw">void</span> <span class="fn">clear</span>() {
+    _items.<span class="fn">clear</span>();
+    <span class="fn">notifyListeners</span>();
+  }
+}
+
+<span class="cm">// 2. Register provider at app root</span>
+<span class="cm">// lib/main.dart</span>
+<span class="kw">void</span> <span class="fn">main</span>() {
+  <span class="fn">runApp</span>(
+    <span class="cls">MultiProvider</span>(
+      providers: [
+        <span class="cls">ChangeNotifierProvider</span>(create: (_) => <span class="cls">CartProvider</span>()),
+        <span class="cls">ChangeNotifierProvider</span>(create: (_) => <span class="cls">AuthProvider</span>()),
+      ],
+      child: <span class="kw">const</span> <span class="cls">MyApp</span>(),
+    ),
+  );
+}
+
+<span class="cm">// 3. Read provider in widget</span>
+<span class="cm">// context.watch() — rebuild when data changes</span>
+<span class="cm">// context.read() — one-time read (in callbacks)</span>
+<span class="cm">// context.select() — rebuild only when specific field changes</span>
+
+<span class="kw">class</span> <span class="cls">CartIcon</span> <span class="kw">extends</span> <span class="cls">StatelessWidget</span> {
+  <span class="kw">const</span> <span class="cls">CartIcon</span>({<span class="kw">super</span>.key});
+
+  <span class="ann">@override</span>
+  <span class="cls">Widget</span> <span class="fn">build</span>(<span class="cls">BuildContext</span> context) {
+    <span class="kw">final</span> cartCount = context.<span class="fn">select</span>&lt;<span class="cls">CartProvider</span>, <span class="kw">int</span>&gt;((c) => c.count);
+    <span class="kw">return</span> <span class="cls">Badge</span>(
+      label: <span class="cls">Text</span>(<span class="str">'$cartCount'</span>),
+      child: <span class="kw">const</span> <span class="cls">Icon</span>(<span class="cls">Icons</span>.shopping_cart),
+    );
+  }
+}
+
+<span class="kw">class</span> <span class="cls">AddToCartButton</span> <span class="kw">extends</span> <span class="cls">StatelessWidget</span> {
+  <span class="kw">final</span> <span class="cls">Product</span> product;
+  <span class="kw">const</span> <span class="cls">AddToCartButton</span>({<span class="kw">super</span>.key, <span class="kw">required</span> <span class="kw">this</span>.product});
+
+  <span class="ann">@override</span>
+  <span class="cls">Widget</span> <span class="fn">build</span>(<span class="cls">BuildContext</span> context) {
+    <span class="kw">return</span> <span class="cls">ElevatedButton</span>(
+      onPressed: () => context.<span class="fn">read</span>&lt;<span class="cls">CartProvider</span>&gt;().<span class="fn">addItem</span>(product),
+      child: <span class="kw">const</span> <span class="cls">Text</span>(<span class="str">'Add to Cart'</span>),
+    );
+  }
+}</pre>
+  </section>
+
+  <!-- ===================== RIVERPOD ===================== -->
+  <section class="section" id="riverpod">
+    <div class="section-tag">18 — State (Advanced)</div>
+    <h2>Riverpod <span class="level-badge level-advanced">Advanced</span></h2>
+    <div class="divider"></div>
+
+    <p>Riverpod is a more powerful, compile-safe alternative to Provider. It supports async operations and code generation.</p>
+
+<pre data-lang="dart"><span class="cm">// pubspec.yaml: flutter_riverpod: ^2.4.0, riverpod_annotation: ^2.3.0</span>
+<span class="cm">// dev_dependencies: riverpod_generator: ^2.3.0</span>
+
+<span class="cm">// 1. Wrap app with ProviderScope</span>
+<span class="kw">void</span> <span class="fn">main</span>() => <span class="fn">runApp</span>(<span class="kw">const</span> <span class="cls">ProviderScope</span>(child: <span class="cls">MyApp</span>()));
+
+<span class="cm">// 2. Define providers (with code gen)</span>
+<span class="kw">import</span> <span class="str">'package:riverpod_annotation/riverpod_annotation.dart'</span>;
+<span class="kw">part</span> <span class="str">'providers.g.dart'</span>;
+
+<span class="cm">// Simple state provider</span>
+<span class="ann">@riverpod</span>
+<span class="kw">class</span> <span class="cls">Counter</span> <span class="kw">extends</span> _$<span class="cls">Counter</span> {
+  <span class="ann">@override</span>
+  <span class="kw">int</span> <span class="fn">build</span>() => <span class="num">0</span>;
+  <span class="kw">void</span> <span class="fn">increment</span>() => state++;
+}
+
+<span class="cm">// Async provider (fetching data)</span>
+<span class="ann">@riverpod</span>
+<span class="cls">Future</span>&lt;<span class="cls">List</span>&lt;<span class="cls">Post</span>&gt;&gt; <span class="fn">posts</span>(<span class="cls">PostsRef</span> ref) <span class="kw">async</span> {
+  <span class="kw">return</span> <span class="kw">await</span> <span class="cls">ApiService</span>.<span class="fn">getPosts</span>();
+}
+
+<span class="cm">// 3. Consume in widgets using ConsumerWidget</span>
+<span class="kw">class</span> <span class="cls">PostsScreen</span> <span class="kw">extends</span> <span class="cls">ConsumerWidget</span> {
+  <span class="kw">const</span> <span class="cls">PostsScreen</span>({<span class="kw">super</span>.key});
+
+  <span class="ann">@override</span>
+  <span class="cls">Widget</span> <span class="fn">build</span>(<span class="cls">BuildContext</span> context, <span class="cls">WidgetRef</span> ref) {
+    <span class="kw">final</span> postsAsync = ref.<span class="fn">watch</span>(postsProvider);
+    <span class="kw">final</span> count = ref.<span class="fn">watch</span>(counterProvider);
+
+    <span class="kw">return</span> postsAsync.<span class="fn">when</span>(
+      loading: () => <span class="kw">const</span> <span class="cls">CircularProgressIndicator</span>(),
+      error: (e, st) => <span class="cls">Text</span>(<span class="str">'Error: $e'</span>),
+      data: (posts) => <span class="cls">ListView</span>.<span class="fn">builder</span>(
+        itemCount: posts.length,
+        itemBuilder: (ctx, i) => <span class="cls">Text</span>(posts[i].title),
+      ),
+    );
+  }
+}</pre>
+  </section>
+
+  <!-- ===================== BLOC ===================== -->
+  <section class="section" id="bloc">
+    <div class="section-tag">19 — State (Advanced)</div>
+    <h2>BLoC Pattern <span class="level-badge level-advanced">Advanced</span></h2>
+    <div class="divider"></div>
+
+    <p>BLoC (Business Logic Component) separates UI from business logic using streams. Best for large, complex apps.</p>
+
+<pre data-lang="dart"><span class="cm">// pubspec.yaml: flutter_bloc: ^8.1.0</span>
+<span class="cm">// lib/blocs/auth/auth_event.dart</span>
+<span class="kw">abstract class</span> <span class="cls">AuthEvent</span> {}
+<span class="kw">class</span> <span class="cls">LoginRequested</span> <span class="kw">extends</span> <span class="cls">AuthEvent</span> {
+  <span class="kw">final</span> <span class="cls">String</span> email, password;
+  <span class="cls">LoginRequested</span>({<span class="kw">required</span> <span class="kw">this</span>.email, <span class="kw">required</span> <span class="kw">this</span>.password});
+}
+<span class="kw">class</span> <span class="cls">LogoutRequested</span> <span class="kw">extends</span> <span class="cls">AuthEvent</span> {}
+
+<span class="cm">// lib/blocs/auth/auth_state.dart</span>
+<span class="kw">abstract class</span> <span class="cls">AuthState</span> {}
+<span class="kw">class</span> <span class="cls">AuthInitial</span> <span class="kw">extends</span> <span class="cls">AuthState</span> {}
+<span class="kw">class</span> <span class="cls">AuthLoading</span> <span class="kw">extends</span> <span class="cls">AuthState</span> {}
+<span class="kw">class</span> <span class="cls">AuthSuccess</span> <span class="kw">extends</span> <span class="cls">AuthState</span> { <span class="kw">final</span> <span class="cls">User</span> user; <span class="cls">AuthSuccess</span>(this.user); }
+<span class="kw">class</span> <span class="cls">AuthFailure</span> <span class="kw">extends</span> <span class="cls">AuthState</span> { <span class="kw">final</span> <span class="cls">String</span> error; <span class="cls">AuthFailure</span>(this.error); }
+
+<span class="cm">// lib/blocs/auth/auth_bloc.dart</span>
+<span class="kw">import</span> <span class="str">'package:flutter_bloc/flutter_bloc.dart'</span>;
+
+<span class="kw">class</span> <span class="cls">AuthBloc</span> <span class="kw">extends</span> <span class="cls">Bloc</span>&lt;<span class="cls">AuthEvent</span>, <span class="cls">AuthState</span>&gt; {
+  <span class="cls">AuthBloc</span>() : <span class="kw">super</span>(<span class="cls">AuthInitial</span>()) {
+    <span class="fn">on</span>&lt;<span class="cls">LoginRequested</span>&gt;(_onLogin);
+    <span class="fn">on</span>&lt;<span class="cls">LogoutRequested</span>&gt;(_onLogout);
+  }
+
+  <span class="cls">Future</span>&lt;<span class="kw">void</span>&gt; <span class="fn">_onLogin</span>(<span class="cls">LoginRequested</span> event, <span class="cls">Emitter</span>&lt;<span class="cls">AuthState</span>&gt; emit) <span class="kw">async</span> {
+    <span class="fn">emit</span>(<span class="cls">AuthLoading</span>());
+    <span class="kw">try</span> {
+      <span class="kw">final</span> user = <span class="kw">await</span> <span class="cls">AuthService</span>.<span class="fn">login</span>(event.email, event.password);
+      <span class="fn">emit</span>(<span class="cls">AuthSuccess</span>(user));
+    } <span class="kw">catch</span> (e) {
+      <span class="fn">emit</span>(<span class="cls">AuthFailure</span>(e.<span class="fn">toString</span>()));
+    }
+  }
+
+  <span class="kw">void</span> <span class="fn">_onLogout</span>(<span class="cls">LogoutRequested</span> event, <span class="cls">Emitter</span>&lt;<span class="cls">AuthState</span>&gt; emit) {
+    <span class="fn">emit</span>(<span class="cls">AuthInitial</span>());
+  }
+}
+
+<span class="cm">// In Widget:</span>
+<span class="cls">BlocProvider</span>(
+  create: (_) => <span class="cls">AuthBloc</span>(),
+  child: <span class="cls">BlocConsumer</span>&lt;<span class="cls">AuthBloc</span>, <span class="cls">AuthState</span>&gt;(
+    listener: (ctx, state) {
+      <span class="kw">if</span> (state <span class="kw">is</span> <span class="cls">AuthSuccess</span>) <span class="cls">Navigator</span>.<span class="fn">pushReplacementNamed</span>(ctx, <span class="str">'/home'</span>);
+      <span class="kw">if</span> (state <span class="kw">is</span> <span class="cls">AuthFailure</span>) <span class="fn">showSnackBar</span>(state.error);
+    },
+    builder: (ctx, state) {
+      <span class="kw">if</span> (state <span class="kw">is</span> <span class="cls">AuthLoading</span>) <span class="kw">return</span> <span class="kw">const</span> <span class="cls">CircularProgressIndicator</span>();
+      <span class="kw">return</span> <span class="cls">LoginForm</span>(
+        onSubmit: (email, pass) => ctx.<span class="fn">read</span>&lt;<span class="cls">AuthBloc</span>&gt;().<span class="fn">add</span>(<span class="cls">LoginRequested</span>(email: email, password: pass)),
+      );
+    },
+  ),
+)</pre>
+  </section>
+
+  <!-- ===================== CUSTOM WIDGETS ===================== -->
+  <section class="section" id="custom-widgets">
+    <div class="section-tag">20 — Advanced</div>
+    <h2>Custom Widgets & Painting <span class="level-badge level-advanced">Advanced</span></h2>
+    <div class="divider"></div>
+
+    <h3>Custom Painter</h3>
+<pre data-lang="dart"><span class="kw">class</span> <span class="cls">CircleProgress</span> <span class="kw">extends</span> <span class="cls">StatelessWidget</span> {
+  <span class="kw">final</span> <span class="kw">double</span> progress;  <span class="cm">// 0.0 to 1.0</span>
+  <span class="kw">const</span> <span class="cls">CircleProgress</span>({<span class="kw">super</span>.key, <span class="kw">required</span> <span class="kw">this</span>.progress});
+
+  <span class="ann">@override</span>
+  <span class="cls">Widget</span> <span class="fn">build</span>(<span class="cls">BuildContext</span> context) {
+    <span class="kw">return</span> <span class="cls">CustomPaint</span>(
+      size: <span class="kw">const</span> <span class="cls">Size</span>(<span class="num">150</span>, <span class="num">150</span>),
+      painter: <span class="cls">_CirclePainter</span>(progress),
+    );
+  }
+}
+
+<span class="kw">class</span> <span class="cls">_CirclePainter</span> <span class="kw">extends</span> <span class="cls">CustomPainter</span> {
+  <span class="kw">final</span> <span class="kw">double</span> progress;
+  <span class="cls">_CirclePainter</span>(<span class="kw">this</span>.progress);
+
+  <span class="ann">@override</span>
+  <span class="kw">void</span> <span class="fn">paint</span>(<span class="cls">Canvas</span> canvas, <span class="cls">Size</span> size) {
+    <span class="kw">final</span> center = <span class="cls">Offset</span>(size.width / <span class="num">2</span>, size.height / <span class="num">2</span>);
+    <span class="kw">final</span> radius = size.width / <span class="num">2</span>;
+
+    <span class="cm">// Background circle</span>
+    canvas.<span class="fn">drawCircle</span>(center, radius, <span class="cls">Paint</span>()..color = <span class="cls">Colors</span>.grey.shade200);
+
+    <span class="cm">// Progress arc</span>
+    <span class="kw">final</span> rect = <span class="cls">Rect</span>.<span class="fn">fromCircle</span>(center: center, radius: radius);
+    canvas.<span class="fn">drawArc</span>(
+      rect,
+      -<span class="num">1.5708</span>,                    <span class="cm">// start at top (-pi/2)</span>
+      <span class="num">6.28318</span> * progress,         <span class="cm">// sweep angle</span>
+      <span class="kw">false</span>,
+      <span class="cls">Paint</span>()
+        ..color = <span class="cls">Colors</span>.blue
+        ..strokeWidth = <span class="num">12</span>
+        ..style = <span class="cls">PaintingStyle</span>.stroke
+        ..strokeCap = <span class="cls">StrokeCap</span>.round,
+    );
+  }
+
+  <span class="ann">@override</span>
+  <span class="kw">bool</span> <span class="fn">shouldRepaint</span>(<span class="cls">_CirclePainter</span> old) => old.progress != progress;
+}</pre>
+  </section>
+
+  <!-- ===================== FIREBASE ===================== -->
+  <section class="section" id="firebase">
+    <div class="section-tag">21 — Firebase</div>
+    <h2>Firebase Integration <span class="level-badge level-advanced">Advanced</span></h2>
+    <div class="divider"></div>
+
+<pre data-lang="dart"><span class="cm">// Setup: flutterfire configure (installs google-services.json)</span>
+<span class="cm">// pubspec.yaml:</span>
+<span class="cm">//   firebase_core: ^2.24.0</span>
+<span class="cm">//   firebase_auth: ^4.16.0</span>
+<span class="cm">//   cloud_firestore: ^4.14.0</span>
+
+<span class="cm">// Initialize Firebase in main()</span>
+<span class="kw">void</span> <span class="fn">main</span>() <span class="kw">async</span> {
+  <span class="cls">WidgetsFlutterBinding</span>.<span class="fn">ensureInitialized</span>();
+  <span class="kw">await</span> <span class="cls">Firebase</span>.<span class="fn">initializeApp</span>(options: <span class="cls">DefaultFirebaseOptions</span>.currentPlatform);
+  <span class="fn">runApp</span>(<span class="kw">const</span> <span class="cls">MyApp</span>());
+}
+
+<span class="cm">// ========== Firebase Auth ==========</span>
+<span class="kw">class</span> <span class="cls">AuthService</span> {
+  <span class="kw">static</span> <span class="kw">final</span> _auth = <span class="cls">FirebaseAuth</span>.instance;
+
+  <span class="kw">static</span> <span class="cls">Stream</span>&lt;<span class="cls">User</span>?&gt; <span class="kw">get</span> userStream => _auth.authStateChanges();
+
+  <span class="kw">static</span> <span class="cls">Future</span>&lt;<span class="cls">UserCredential</span>&gt; <span class="fn">signIn</span>(<span class="cls">String</span> email, <span class="cls">String</span> pass) <span class="kw">async</span> {
+    <span class="kw">return</span> <span class="kw">await</span> _auth.<span class="fn">signInWithEmailAndPassword</span>(email: email, password: pass);
+  }
+
+  <span class="kw">static</span> <span class="cls">Future</span>&lt;<span class="kw">void</span>&gt; <span class="fn">signOut</span>() => _auth.<span class="fn">signOut</span>();
+}
+
+<span class="cm">// ========== Firestore ==========</span>
+<span class="kw">class</span> <span class="cls">FirestoreService</span> {
+  <span class="kw">static</span> <span class="kw">final</span> _db = <span class="cls">FirebaseFirestore</span>.instance;
+
+  <span class="cm">// Add document</span>
+  <span class="kw">static</span> <span class="cls">Future</span>&lt;<span class="kw">void</span>&gt; <span class="fn">addPost</span>(<span class="cls">Post</span> post) <span class="kw">async</span> {
+    <span class="kw">await</span> _db.<span class="fn">collection</span>(<span class="str">'posts'</span>).<span class="fn">add</span>(post.<span class="fn">toJson</span>());
+  }
+
+  <span class="cm">// Stream of documents (realtime!)</span>
+  <span class="kw">static</span> <span class="cls">Stream</span>&lt;<span class="cls">List</span>&lt;<span class="cls">Post</span>&gt;&gt; <span class="fn">streamPosts</span>() {
+    <span class="kw">return</span> _db
+      .<span class="fn">collection</span>(<span class="str">'posts'</span>)
+      .<span class="fn">orderBy</span>(<span class="str">'createdAt'</span>, descending: <span class="kw">true</span>)
+      .<fn>snapshots</fn>()
+      .<span class="fn">map</span>((snap) => snap.docs.<span class="fn">map</span>((d) => <span class="cls">Post</span>.<span class="fn">fromJson</span>(d.data())).<span class="fn">toList</span>());
+  }
+}</pre>
+  </section>
+
+  <!-- ===================== TESTING ===================== -->
+  <section class="section" id="testing">
+    <div class="section-tag">22 — Testing</div>
+    <h2>Testing <span class="level-badge level-advanced">Advanced</span></h2>
+    <div class="divider"></div>
+
+<pre data-lang="dart"><span class="cm">// test/unit_test.dart — Unit tests</span>
+<span class="kw">import</span> <span class="str">'package:flutter_test/flutter_test.dart'</span>;
+
+<span class="kw">void</span> <span class="fn">main</span>() {
+  <span class="fn">group</span>(<span class="str">'CartProvider'</span>, () {
+    <span class="kw">late</span> <span class="cls">CartProvider</span> cart;
+
+    <span class="fn">setUp</span>(() => cart = <span class="cls">CartProvider</span>());
+
+    <span class="fn">test</span>(<span class="str">'starts empty'</span>, () {
+      <span class="fn">expect</span>(cart.count, equals(<span class="num">0</span>));
+    });
+
+    <span class="fn">test</span>(<span class="str">'adds item correctly'</span>, () {
+      cart.<span class="fn">addItem</span>(<span class="cls">Product</span>(id: <span class="str">'1'</span>, name: <span class="str">'Test'</span>, price: <span class="num">9.99</span>));
+      <span class="fn">expect</span>(cart.count, equals(<span class="num">1</span>));
+      <span class="fn">expect</span>(cart.total, closeTo(<span class="num">9.99</span>, <span class="num">0.001</span>));
+    });
+  });
+}
+
+<span class="cm">// test/widget_test.dart — Widget tests</span>
+<span class="fn">testWidgets</span>(<span class="str">'Counter increments on button tap'</span>, (tester) <span class="kw">async</span> {
+  <span class="kw">await</span> tester.<span class="fn">pumpWidget</span>(<span class="kw">const</span> <span class="cls">MaterialApp</span>(home: <span class="cls">CounterScreen</span>()));
+
+  <span class="fn">expect</span>(<span class="fn">find</span>.<span class="fn">text</span>(<span class="str">'0'</span>), findsOneWidget);
+
+  <span class="kw">await</span> tester.<span class="fn">tap</span>(<span class="fn">find</span>.<span class="fn">byIcon</span>(<span class="cls">Icons</span>.add));
+  <span class="kw">await</span> tester.<span class="fn">pump</span>();  <span class="cm">// triggers rebuild</span>
+
+  <span class="fn">expect</span>(<span class="fn">find</span>.<span class="fn">text</span>(<span class="str">'1'</span>), findsOneWidget);
+});
+
+<span class="cm">// Run tests:</span>
+<span class="cm">// flutter test                  — all tests</span>
+<span class="cm">// flutter test test/unit_test.dart — specific file</span>
+<span class="cm">// flutter test --coverage       — with coverage report</span></pre>
+  </section>
+
+  <!-- ===================== DEPLOYMENT ===================== -->
+  <section class="section" id="deployment">
+    <div class="section-tag">23 — Deploy</div>
+    <h2>Build & Deploy <span class="level-badge level-advanced">Advanced</span></h2>
+    <div class="divider"></div>
+
+<pre data-lang="bash"><span class="cm"># ===== Android =====</span>
+<span class="cm"># Build release APK</span>
+flutter build apk --release
+
+<span class="cm"># Build App Bundle (recommended for Play Store)</span>
+flutter build appbundle --release
+<span class="cm"># Output: build/app/outputs/bundle/release/app-release.aab</span>
+
+<span class="cm"># ===== iOS =====</span>
+flutter build ios --release
+<span class="cm"># Then open Xcode and use Archive + Distribute</span>
+
+<span class="cm"># ===== Web =====</span>
+flutter build web --release
+<span class="cm"># Output: build/web/ — deploy to any static host</span>
+
+<span class="cm"># ===== Desktop =====</span>
+flutter build windows --release
+flutter build macos --release
+flutter build linux --release
+
+<span class="cm"># ===== App Signing (Android) =====</span>
+<span class="cm"># 1. Create keystore:</span>
+keytool -genkey -v -keystore ~/key.jks -keyalg RSA -keysize 2048 -validity 10000 -alias key
+
+<span class="cm"># 2. Create android/key.properties:</span>
+<span class="cm"># storePassword=your-password</span>
+<span class="cm"># keyPassword=your-password</span>
+<span class="cm"># keyAlias=key</span>
+<span class="cm"># storeFile=../key.jks</span>
+
+<span class="cm"># 3. Update android/app/build.gradle to use signing config</span></pre>
+
+    <div class="callout callout-tip">
+      <strong>✅ Before Release Checklist</strong>
+      Update version in pubspec.yaml → Run flutter analyze → Run flutter test → Check app permissions in AndroidManifest.xml / Info.plist → Test on real device → Generate signed build
+    </div>
+
+    <div class="callout callout-warn">
+      <strong>⚠️ Performance Tips</strong>
+      Use <code>const</code> constructors everywhere possible. Use <code>ListView.builder</code> instead of <code>ListView</code> for large lists. Avoid doing heavy work in <code>build()</code>. Use <code>RepaintBoundary</code> to isolate expensive widgets. Profile with Flutter DevTools.
+    </div>
+  </section>
+
+</main>
+
+<script>
+  // Sidebar active link highlighting
+  const sections = document.querySelectorAll('section[id]');
+  const links = document.querySelectorAll('.sidebar a');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        links.forEach(l => l.classList.remove('active'));
+        const a = document.querySelector(`.sidebar a[href="#${e.target.id}"]`);
+        if (a) a.classList.add('active');
+      }
+    });
+  }, { threshold: 0.3 });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>
